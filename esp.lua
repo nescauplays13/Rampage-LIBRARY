@@ -1,3 +1,5 @@
+-- LocalScript: ESP completo + FIX respawn + players novos + otimizado
+
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local Workspace = game:GetService("Workspace")
@@ -6,12 +8,14 @@ local LocalPlayer = Players.LocalPlayer
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 local CAMERA = Workspace.CurrentCamera
 
+-- CONFIG
 local MAX_DISTANCE = 250
 local VISIBLE_COLOR = Color3.fromRGB(0, 200, 0)
 local HIDDEN_COLOR  = Color3.fromRGB(220, 40, 40)
 local LERP_SPEED    = 6
 local VIS_CHECK_DT  = 0.25
 
+-- GUI
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "ESPGui"
 ScreenGui.ResetOnSpawn = false
@@ -76,12 +80,14 @@ end)
 
 local espData = {}
 
+-- CRIAR ESP (FIX PRINCIPAL)
 local function createESP(player, char)
 	if player == LocalPlayer then return end
 
 	local head = char:WaitForChild("Head", 3)
 	if not head then return end
 
+	-- REMOVE ESP ANTIGO
 	if espData[player] then
 		local old = espData[player]
 		if old.highlight then old.highlight:Destroy() end
@@ -120,6 +126,7 @@ local function createESP(player, char)
 	}
 end
 
+-- RAYCAST
 local rayParams = RaycastParams.new()
 rayParams.FilterType = Enum.RaycastFilterType.Blacklist
 
@@ -137,6 +144,7 @@ local function isVisible(char)
 	return result and result.Instance and result.Instance:IsDescendantOf(char)
 end
 
+-- SETUP PLAYER (FIX NOVOS PLAYERS)
 local function setupPlayer(p)
 
 	p.CharacterAdded:Connect(function(char)
@@ -163,6 +171,7 @@ Players.PlayerRemoving:Connect(function(p)
 	end
 end)
 
+-- LOOP
 RunService.RenderStepped:Connect(function(dt)
 	CAMERA = Workspace.CurrentCamera
 
@@ -205,8 +214,3 @@ RunService.RenderStepped:Connect(function(dt)
 		data.highlight.FillColor = data.highlight.FillColor:Lerp(target, dt * LERP_SPEED)
 	end
 end)
-
-   end,
-})
-
-Rayfield:LoadConfiguration()
