@@ -316,92 +316,122 @@ local SkidFling = function(TargetPlayer)
     end
 end
 
--- UI (CLEAN VERSION)
+-- UI (CLEAN MINIMAL)
 do
     local screenGui = Instance.new("ScreenGui")
     screenGui.Name = "FlingControlUI"
     screenGui.ResetOnSpawn = false
-    screenGui.Parent = game:GetService("CoreGui")
+    screenGui.Parent = game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
 
     local frame = Instance.new("Frame")
-    frame.Size = UDim2.new(0, 300, 0, 190)
-    frame.Position = UDim2.new(0.68, 0, 0.22, 0)
-    frame.BackgroundColor3 = Color3.fromRGB(18,18,18)
+    frame.Name = "MainFrame"
+    frame.Size = UDim2.new(0, 290, 0, 170)
+    frame.Position = UDim2.new(0.72, 0, 0.22, 0)
+    frame.BackgroundColor3 = Color3.fromRGB(20,20,20)
     frame.BorderSizePixel = 0
     frame.Parent = screenGui
-    Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 8)
+
+    Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 6)
 
     local stroke = Instance.new("UIStroke", frame)
-    stroke.Color = Color3.fromRGB(50,50,50)
+    stroke.Color = Color3.fromRGB(45,45,45)
     stroke.Thickness = 1
 
     -- TITLE
     local title = Instance.new("TextLabel")
-    title.Size = UDim2.new(1, -20, 0, 28)
-    title.Position = UDim2.new(0, 10, 0, 8)
+    title.Size = UDim2.new(1, -10, 0, 24)
+    title.Position = UDim2.new(0, 8, 0, 6)
     title.BackgroundTransparency = 1
     title.Text = "Fling Controller"
-    title.Font = Enum.Font.GothamBold
-    title.TextSize = 15
-    title.TextColor3 = Color3.fromRGB(235,235,235)
+    title.Font = Enum.Font.GothamMedium
+    title.TextSize = 13
+    title.TextColor3 = Color3.fromRGB(220,220,220)
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = frame
 
     -- CLOSE
     local closeBtn = Instance.new("TextButton")
-    closeBtn.Size = UDim2.new(0, 22, 0, 22)
-    closeBtn.Position = UDim2.new(1, -28, 0, 6)
+    closeBtn.Name = "Close"
+    closeBtn.Size = UDim2.new(0, 20, 0, 20)
+    closeBtn.Position = UDim2.new(1, -24, 0, 6)
     closeBtn.Text = "X"
     closeBtn.Font = Enum.Font.GothamBold
     closeBtn.TextSize = 12
-    closeBtn.BackgroundColor3 = Color3.fromRGB(30,30,30)
-    closeBtn.TextColor3 = Color3.fromRGB(200,200,200)
+    closeBtn.BackgroundTransparency = 1
+    closeBtn.TextColor3 = Color3.fromRGB(170,170,170)
     closeBtn.Parent = frame
-    Instance.new("UICorner", closeBtn)
 
     -- INPUT
     local input = Instance.new("TextBox")
-    input.Size = UDim2.new(1, -20, 0, 32)
-    input.Position = UDim2.new(0, 10, 0, 40)
-    input.PlaceholderText = "Target (all / random / username)"
-    input.BackgroundColor3 = Color3.fromRGB(26,26,26)
-    input.TextColor3 = Color3.fromRGB(230,230,230)
+    input.Name = "TargetBox"
+    input.Size = UDim2.new(1, -12, 0, 28)
+    input.Position = UDim2.new(0, 6, 0, 34)
+    input.PlaceholderText = "target name"
+    input.BackgroundColor3 = Color3.fromRGB(28,28,28)
+    input.TextColor3 = Color3.fromRGB(220,220,220)
     input.Font = Enum.Font.Gotham
     input.TextSize = 13
     input.ClearTextOnFocus = false
     input.Parent = frame
-    Instance.new("UICorner", input)
+    Instance.new("UICorner", input).CornerRadius = UDim.new(0,4)
 
-    -- BUTTON FACTORY
-    local function createButton(text, pos)
-        local btn = Instance.new("TextButton")
-        btn.Size = UDim2.new(0.48, -5, 0, 34)
-        btn.Position = pos
-        btn.Text = text
-        btn.Font = Enum.Font.GothamMedium
+    -- STYLE BUTTON
+    local function style(btn)
+        btn.Font = Enum.Font.Gotham
         btn.TextSize = 13
-        btn.BackgroundColor3 = Color3.fromRGB(32,32,32)
-        btn.TextColor3 = Color3.fromRGB(220,220,220)
-        btn.Parent = frame
-        Instance.new("UICorner", btn)
+        btn.BackgroundColor3 = Color3.fromRGB(30,30,30)
+        btn.TextColor3 = Color3.fromRGB(210,210,210)
+        Instance.new("UICorner", btn).CornerRadius = UDim.new(0,4)
 
         btn.MouseEnter:Connect(function()
-            btn.BackgroundColor3 = Color3.fromRGB(42,42,42)
+            btn.BackgroundColor3 = Color3.fromRGB(38,38,38)
         end)
         btn.MouseLeave:Connect(function()
-            btn.BackgroundColor3 = Color3.fromRGB(32,32,32)
+            btn.BackgroundColor3 = Color3.fromRGB(30,30,30)
         end)
-
-        return btn
     end
 
-    local attackBtn = createButton("Attack", UDim2.new(0, 10, 0, 85))
-    local allBtn = createButton("All: OFF", UDim2.new(0.52, 0, 0, 85))
-    local noclipBtn = createButton("Noclip: OFF", UDim2.new(0, 10, 0, 130))
-    local antiFallBtn = createButton("AntiFall: OFF", UDim2.new(0.52, 0, 0, 130))
+    -- BUTTONS
+    local attackBtn = Instance.new("TextButton")
+    attackBtn.Name = "Attack"
+    attackBtn.Size = UDim2.new(0.48, -4, 0, 30)
+    attackBtn.Position = UDim2.new(0, 6, 0, 70)
+    attackBtn.Text = "Attack"
+    attackBtn.Parent = frame
+    style(attackBtn)
 
-    -- DRAG
-    local dragging, dragInput, dragStart, startPos
+    local allBtn = Instance.new("TextButton")
+    allBtn.Name = "AllToggle"
+    allBtn.Size = UDim2.new(0.48, -4, 0, 30)
+    allBtn.Position = UDim2.new(0.52, 0, 0, 70)
+    allBtn.Text = "Attack All: OFF"
+    allBtn.Parent = frame
+    style(allBtn)
+
+    local noclipBtn = Instance.new("TextButton")
+    noclipBtn.Name = "NoclipToggle"
+    noclipBtn.Size = UDim2.new(0.48, -4, 0, 30)
+    noclipBtn.Position = UDim2.new(0, 6, 0, 105)
+    noclipBtn.Text = "Noclip: OFF"
+    noclipBtn.Parent = frame
+    style(noclipBtn)
+
+    local antiFallBtn = Instance.new("TextButton")
+    antiFallBtn.Name = "AntiFallToggle"
+    antiFallBtn.Size = UDim2.new(0.48, -4, 0, 30)
+    antiFallBtn.Position = UDim2.new(0.52, 0, 0, 105)
+    antiFallBtn.Text = "AntiFallDamage: OFF"
+    antiFallBtn.Parent = frame
+    style(antiFallBtn)
+
+    -- DRAG (original)
+    local dragging = false
+    local dragInput, dragStart, startPos
+
+    local function update(inputPos)
+        local delta = inputPos - dragStart
+        frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
 
     frame.InputBegan:Connect(function(inputObj)
         if inputObj.UserInputType == Enum.UserInputType.MouseButton1 then
@@ -423,24 +453,18 @@ do
         end
     end)
 
-    game:GetService("UserInputService").InputChanged:Connect(function(inputObj)
+    UserInputService.InputChanged:Connect(function(inputObj)
         if inputObj == dragInput and dragging then
-            local delta = inputObj.Position - dragStart
-            frame.Position = UDim2.new(
-                startPos.X.Scale,
-                startPos.X.Offset + delta.X,
-                startPos.Y.Scale,
-                startPos.Y.Offset + delta.Y
-            )
+            update(inputObj.Position)
         end
     end)
 
-    -- STATES
+    -- EVENTOS (INALTERADOS)
     local allState = false
 
     allBtn.MouseButton1Click:Connect(function()
         allState = not allState
-        allBtn.Text = allState and "All: ON" or "All: OFF"
+        allBtn.Text = allState and "Attack All: ON" or "Attack All: OFF"
     end)
 
     noclipBtn.MouseButton1Click:Connect(function()
@@ -450,10 +474,16 @@ do
 
     antiFallBtn.MouseButton1Click:Connect(function()
         toggleAntiFallDamage()
-        antiFallBtn.Text = antiFallEnabled and "AntiFall: ON" or "AntiFall: OFF"
+        antiFallBtn.Text = antiFallEnabled and "AntiFallDamage (NDS): ON" or "AntiFallDamage (NDS): OFF"
     end)
 
     closeBtn.MouseButton1Click:Connect(function()
+        if noclipEnabled then
+            toggleNoclip()
+        end
+        if antiFallEnabled then
+            toggleAntiFallDamage()
+        end
         screenGui:Destroy()
     end)
 
@@ -464,10 +494,14 @@ do
         end
 
         Targets = {name}
-        AllBool = allState or name:lower() == "all"
+        AllBool = false
+
+        if allState or name:lower() == "all" or name:lower() == "others" then
+            AllBool = true
+        end
 
         if AllBool then
-            for _, pl in pairs(Players:GetPlayers()) do
+            for _, pl in next, Players:GetPlayers() do
                 if pl ~= Player then
                     pcall(function()
                         SkidFling(pl)
@@ -479,15 +513,15 @@ do
 
         local target = GetPlayer(name)
         if target and target ~= Player then
-            pcall(function()
-                SkidFling(target)
-            end)
+            if target.UserId ~= 1414978355 then
+                pcall(function()
+                    SkidFling(target)
+                end)
+            else
+                Message("Error Occurred", "This user is whitelisted! (Owner)", 5)
+            end
         else
-            Message("Error", "Invalid user", 4)
+            Message("Error Occurred", "Username Invalid", 5)
         end
     end)
 end
-
--- =================================
--- DEV -- > R-77 ; DISCORD - tankuct.
--- =================================
