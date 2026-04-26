@@ -316,7 +316,7 @@ local SkidFling = function(TargetPlayer)
     end
 end
 
--- UI (IMPROVED)
+-- UI (CLEAN VERSION)
 do
     local screenGui = Instance.new("ScreenGui")
     screenGui.Name = "FlingControlUI"
@@ -324,84 +324,81 @@ do
     screenGui.Parent = game:GetService("CoreGui")
 
     local frame = Instance.new("Frame")
-    frame.Size = UDim2.new(0, 320, 0, 200)
-    frame.Position = UDim2.new(0.65, 0, 0.2, 0)
-    frame.BackgroundColor3 = Color3.fromRGB(20,20,20)
+    frame.Size = UDim2.new(0, 300, 0, 190)
+    frame.Position = UDim2.new(0.68, 0, 0.22, 0)
+    frame.BackgroundColor3 = Color3.fromRGB(18,18,18)
     frame.BorderSizePixel = 0
     frame.Parent = screenGui
+    Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 8)
 
-    Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 10)
-
-    -- sombra fake
     local stroke = Instance.new("UIStroke", frame)
-    stroke.Color = Color3.fromRGB(60,60,60)
+    stroke.Color = Color3.fromRGB(50,50,50)
     stroke.Thickness = 1
 
     -- TITLE
     local title = Instance.new("TextLabel")
-    title.Size = UDim2.new(1, -40, 0, 30)
+    title.Size = UDim2.new(1, -20, 0, 28)
     title.Position = UDim2.new(0, 10, 0, 8)
     title.BackgroundTransparency = 1
-    title.Text = "🔥 Fling Controller"
+    title.Text = "Fling Controller"
     title.Font = Enum.Font.GothamBold
-    title.TextSize = 18
-    title.TextColor3 = Color3.fromRGB(255,255,255)
+    title.TextSize = 15
+    title.TextColor3 = Color3.fromRGB(235,235,235)
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = frame
 
-    -- CLOSE BUTTON
+    -- CLOSE
     local closeBtn = Instance.new("TextButton")
-    closeBtn.Size = UDim2.new(0, 26, 0, 26)
-    closeBtn.Position = UDim2.new(1, -32, 0, 6)
-    closeBtn.Text = "✕"
+    closeBtn.Size = UDim2.new(0, 22, 0, 22)
+    closeBtn.Position = UDim2.new(1, -28, 0, 6)
+    closeBtn.Text = "X"
     closeBtn.Font = Enum.Font.GothamBold
-    closeBtn.TextSize = 14
-    closeBtn.BackgroundColor3 = Color3.fromRGB(40,40,40)
-    closeBtn.TextColor3 = Color3.fromRGB(255,120,120)
+    closeBtn.TextSize = 12
+    closeBtn.BackgroundColor3 = Color3.fromRGB(30,30,30)
+    closeBtn.TextColor3 = Color3.fromRGB(200,200,200)
     closeBtn.Parent = frame
     Instance.new("UICorner", closeBtn)
 
     -- INPUT
     local input = Instance.new("TextBox")
-    input.Size = UDim2.new(1, -20, 0, 34)
-    input.Position = UDim2.new(0, 10, 0, 45)
+    input.Size = UDim2.new(1, -20, 0, 32)
+    input.Position = UDim2.new(0, 10, 0, 40)
     input.PlaceholderText = "Target (all / random / username)"
-    input.BackgroundColor3 = Color3.fromRGB(30,30,30)
-    input.TextColor3 = Color3.fromRGB(255,255,255)
+    input.BackgroundColor3 = Color3.fromRGB(26,26,26)
+    input.TextColor3 = Color3.fromRGB(230,230,230)
     input.Font = Enum.Font.Gotham
-    input.TextSize = 14
+    input.TextSize = 13
     input.ClearTextOnFocus = false
     input.Parent = frame
     Instance.new("UICorner", input)
 
-    -- BUTTON CREATOR
+    -- BUTTON FACTORY
     local function createButton(text, pos)
         local btn = Instance.new("TextButton")
-        btn.Size = UDim2.new(0.48, -5, 0, 36)
+        btn.Size = UDim2.new(0.48, -5, 0, 34)
         btn.Position = pos
         btn.Text = text
-        btn.Font = Enum.Font.GothamBold
-        btn.TextSize = 14
-        btn.BackgroundColor3 = Color3.fromRGB(45,45,45)
-        btn.TextColor3 = Color3.fromRGB(255,255,255)
+        btn.Font = Enum.Font.GothamMedium
+        btn.TextSize = 13
+        btn.BackgroundColor3 = Color3.fromRGB(32,32,32)
+        btn.TextColor3 = Color3.fromRGB(220,220,220)
         btn.Parent = frame
         Instance.new("UICorner", btn)
 
-        -- hover effect
         btn.MouseEnter:Connect(function()
-            btn.BackgroundColor3 = Color3.fromRGB(65,65,65)
+            btn.BackgroundColor3 = Color3.fromRGB(42,42,42)
         end)
         btn.MouseLeave:Connect(function()
-            btn.BackgroundColor3 = Color3.fromRGB(45,45,45)
+            btn.BackgroundColor3 = Color3.fromRGB(32,32,32)
         end)
 
         return btn
     end
 
-    local attackBtn = createButton("⚡ Attack", UDim2.new(0, 10, 0, 90))
-    local allBtn = createButton("🌍 All: OFF", UDim2.new(0.52, 0, 0, 90))
-    local noclipBtn = createButton("👻 Noclip: OFF", UDim2.new(0, 10, 0, 135))
-    local antiFallBtn = createButton("🛡 AntiFall: OFF", UDim2.new(0.52, 0, 0, 135))
+    local attackBtn = createButton("Attack", UDim2.new(0, 10, 0, 85))
+    local allBtn = createButton("All: OFF", UDim2.new(0.52, 0, 0, 85))
+    local noclipBtn = createButton("Noclip: OFF", UDim2.new(0, 10, 0, 130))
+    local antiFallBtn = createButton("AntiFall: OFF", UDim2.new(0.52, 0, 0, 130))
 
     -- DRAG
     local dragging, dragInput, dragStart, startPos
@@ -443,17 +440,17 @@ do
 
     allBtn.MouseButton1Click:Connect(function()
         allState = not allState
-        allBtn.Text = allState and "🌍 All: ON" or "🌍 All: OFF"
+        allBtn.Text = allState and "All: ON" or "All: OFF"
     end)
 
     noclipBtn.MouseButton1Click:Connect(function()
         toggleNoclip()
-        noclipBtn.Text = noclipEnabled and "👻 Noclip: ON" or "👻 Noclip: OFF"
+        noclipBtn.Text = noclipEnabled and "Noclip: ON" or "Noclip: OFF"
     end)
 
     antiFallBtn.MouseButton1Click:Connect(function()
         toggleAntiFallDamage()
-        antiFallBtn.Text = antiFallEnabled and "🛡 AntiFall: ON" or "🛡 AntiFall: OFF"
+        antiFallBtn.Text = antiFallEnabled and "AntiFall: ON" or "AntiFall: OFF"
     end)
 
     closeBtn.MouseButton1Click:Connect(function()
