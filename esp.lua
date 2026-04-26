@@ -1,3 +1,9 @@
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+
+task.wait(1)
+
 -- LocalScript: ESP completo + FIX respawn + players novos + otimizado
 
 local Players = game:GetService("Players")
