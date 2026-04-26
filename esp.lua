@@ -1,31 +1,3 @@
-debugX = true
-
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-
-local Window = Rayfield:CreateWindow({
-   Name = "Meu Hub",
-   LoadingTitle = "Carregando...",
-   LoadingSubtitle = "by Você",
-   ConfigurationSaving = {
-      Enabled = true,
-      FileName = "MeuHubConfig"
-   }
-})
-
--- 😈 ABA TROLL (vazia)
-local TrollTab = Window:CreateTab("Troll", 4483362458)
-
--- 👁️ ABA ESP
-local ESPTab = Window:CreateTab("ESP", 4483362458)
-
--- BOTÃO COM SCRIPT ORIGINAL
-ESPTab:CreateButton({
-   Name = "ESP",
-   Callback = function()
-
--- COLEI SEU SCRIPT AQUI SEM MUDAR NADA
--- :contentReference[oaicite:0]{index=0}
-
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local Workspace = game:GetService("Workspace")
